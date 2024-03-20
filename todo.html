@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todos</title>
+</head>
+<body>
+    <h1 class="title">Todo List</h1>
+    <div class="container">
+        <input type="text" name="task-input" id="task-input">
+        <button onclick="taskAdd()">Add</button>
+        
+        <ul id="task-list">
+            
+        </ul>
+    </div>
+    <script>
+        const addButton = document.querySelector('button');
+
+        function taskAdd() {
+            const taskInput = document.getElementById('task-input').value;
+
+            if (taskInput === '') {
+                alert('Task input is empty');
+                return;
+            } 
+
+            const tasks = document.getElementById('task-list');
+
+            const taskListItem = document.createElement('li');
+
+            const taskCheckbox = document.createElement('input');
+            taskCheckbox.type = 'checkbox';
+            taskListItem.appendChild(taskCheckbox);
+
+            const taskText = document.createElement('span');
+            taskText.textContent = taskInput;
+            taskListItem.appendChild(taskText);
+
+            tasks.appendChild(taskListItem);
+
+            // Add event listener to checkbox
+            taskCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    taskText.style.textDecoration = 'line-through';
+                } else {
+                    taskText.style.textDecoration = 'none';
+                }
+            });
+
+            // Clear input field after adding task
+            document.getElementById('task-input').value = '';
+        }
+
+        addButton.addEventListener('click', taskAdd);
+    </script>
+</body>
+</html>
