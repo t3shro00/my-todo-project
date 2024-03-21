@@ -1,21 +1,10 @@
-# GET Request
-GET http://localhost:3000/home
-# POST Request with JSON data
-POST http://localhost:3000/add
+### Get tasks
+GET http://localhost:3001/
+
+### Add new task
+POST http://localhost:3001/new
 Content-Type: application/json
 
 {
-  "description": "Task from REST Client"
+    "description": "Test from REST client"
 }
-
-# PUT Request with JSON data
-PUT http://localhost:3000/update/1
-Content-Type: application/json
-
-{
-  "description": "Task from REST Client"
-}
-
-# DELETE Request
-DELETE http://localhost:3000/delete/1
-```

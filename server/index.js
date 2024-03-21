@@ -2,13 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
 
-const app = express(); // Define the Express app
+const app = express();
 app.use(cors());
 app.use(express.json());
+
 const port = 3001;
 
-// Configure connection pool
-const openDb = new Pool ({
+const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
     database: 'todo_proj',
@@ -16,62 +16,24 @@ const openDb = new Pool ({
     port: 5432
 });
 
-// Define routes and other middleware here
-
-// Start the server
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Welcome to the TODO API' });
 });
 
-// Route to fetch all tasks from the database
-app.get('/tasks', async (req, res) => {
-  try {
-      const query = 'SELECT * FROM todo_list';
-      const { rows } = await openDb.query(query);
-      res.json(rows);
-  } catch (error) {
-      console.error('Error executing query:', error);
-      res.status(500).json({ error: 'Internal server error' });
-  }
-});
+app.post('/new', (req, res) => {
+    const { description } = req.body;
+    if (!description) {
+        return res.status(400).json({ error: 'Description is required' });
+    }
 
-// Route to add a new task to the database
-app.post('/tasks', async (req, res) => {
-  try {
-      const { task } = req.body;
-      const query = 'INSERT INTO todo_list (task) VALUES ($1) RETURNING *';
-      const { rows } = await openDb.query(query, [task]);
-      res.status(201).json(rows[0]);
-  } catch (error) {
-      console.error('Error executing query:', error);
-      res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Route to delete a task from the database
-app.delete('/tasks/:id', async (req, res) => {
-  try {
-      const { id } = req.params;
-      const query = 'DELETE FROM todo_list WHERE id = $1';
-      await openDb.query(query, [id]);
-      res.json({ success: true });
-  } catch (error) {
-      console.error('Error executing query:', error);
-      res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-
-const BACKEND_ROOT_URL = 'http://localhost:3001/';
-
-const getTasks = async () => {
-  try {
-    const response = await fetch(`${BACKEND_ROOT_URL}/tasks`);
-    const json =  await response.json();
-    json.forEach(task => {
-      renderTasks(task.task_description)
+    pool.query('INSERT INTO task (description) VALUES ($1) RETURNING id', [description], (error, result) => {
+        if (error) {
+            return res.status(500).json({ error: error.message });
+        }
+        res.status(200).json({ id: result.rows[0].id });
     });
-  } catch (error) {
-    console.error('Error fetching tasks:', error);
-  }
-}
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
