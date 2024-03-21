@@ -1,8 +1,10 @@
+
+
 // Define an array to store tasks
 let tasks = [];
 
 // Function to add a task
-function addTask(event) {
+const addTask = (event) => {
     event.preventDefault(); // Prevent form submission
 
     // Get the input value
@@ -12,11 +14,10 @@ function addTask(event) {
     if (taskText !== '') {
         // Create a new task object
         const newTask = {
-            id: Date.now(),
-            text: taskText,
+            id: id,
+            text: task_description,
+            due_date: due_date,
             completed: false,
-            priority: 1, // Assuming default priority is 1
-            createdAt: new Date()
         };
 
         // Push the task into the tasks array
@@ -34,7 +35,7 @@ function addTask(event) {
 }
 
 // Function to render tasks
-function renderTasks() {
+const renderTasks = (task) =>{
     const taskList = document.querySelector('.taskList');
 
     // Clear previous tasks
