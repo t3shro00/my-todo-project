@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 const pool = new Pool({
     user: 'postgres',
@@ -17,7 +17,17 @@ const pool = new Pool({
 });
 
 app.get('/', (req, res) => {
-    res.status(200).json({ message: 'Welcome to the TODO API' });
+    try {
+        pool.query('SELECT * FROM task', (error, result) => {
+            if (error) {
+                return res.status(500).json({ error: error.message });
+            }
+            res.status(200).json(result.rows);
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 app.post('/new', (req, res) => {
