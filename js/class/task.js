@@ -17,4 +17,5 @@ class Task {
     }
 }
 
+// Export the Task class
 export { Task };

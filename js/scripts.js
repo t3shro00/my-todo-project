@@ -1,14 +1,15 @@
-const backendURL = 'http://localhost:3001/';
+const backendURL = 'http://localhost:3001/'; // Define the backend URL
 
-import { Todos } from './class/todos.js';
-const todos = new Todos(backendURL);
+// Import the Todos class from the todos.js file
+import { Todos } from './class/todos.js'; 
+const todos = new Todos(backendURL); // Create an instance of the Todos class
 
 const inputField = document.getElementById('taskInput');
 inputField.disabled = true; // Disable the input field initially
 const addButton = document.getElementById('addButton');
 const taskList = document.getElementById('taskList');
 
-
+// Get tasks from the backend
 const getTasks = () => {
     // Fetch tasks from the backend
     todos.getTasks()
@@ -25,16 +26,40 @@ const getTasks = () => {
         .catch(error => console.error('Error fetching tasks:', error)); // Handle errors
 }
 
+
+
 function renderTask(task) {
     // Create a list item element
     const taskItem = document.createElement('li');
+    const taskDescription = document.createElement('span');
+    // Set the task description
+    taskDescription.textContent = task.description;
+    taskItem.appendChild(taskDescription);
 
-    // Set the text content of the list item to the task description
-    taskItem.textContent = task.description;
-
-    // Append the list item to the task list
+    // Create a delete button
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.addEventListener('click', () => {
+        // Send a DELETE request to the backend
+        todos.removeTask(task.id)
+            .then(() => {
+                // Remove the task from the task list
+                taskList.removeChild(taskItem);
+            })
+            .catch(error => console.error('Error deleting task:', error));
+    }
+    );
+    // Append the delete button to the task item
+    taskItem.appendChild(deleteButton);
+    
+    // Append the task item to the task list
     taskList.appendChild(taskItem);
 }
+
+
+
+
+
 
 
 // Save task to the backend
@@ -75,7 +100,7 @@ addButton.addEventListener('click', () => {
     if (newTaskDescription !== '') {
         // Save the task to the backend
         todos.addNewTask(newTaskDescription)
-        // Handle the response from the backend
+            // Handle the response from the backend
             .then((newTask) => {
                 // Render the new task
                 renderTask(newTask);
