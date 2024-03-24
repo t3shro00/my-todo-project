@@ -1,9 +1,8 @@
 const express = require('express');
 const { query } = require('../helpers/db.js'); 
 
-const todoRouter = express.Router(); // Create an instance of Express Router
+const todoRouter = express.Router(); 
 
-todoRouter.use(express.json());
 
 todoRouter.get('/', async (req, res) => {
     try {
