@@ -1,6 +1,4 @@
-const backendURL = 'http://localhost:3001/'; // Define the backend URL
-
-// Import the Todos class from the todos.js file
+const backendURL = 'http://localhost:3001/'; //
 import { Todos } from './class/todos.js'; 
 const todos = new Todos(backendURL); // Create an instance of the Todos class
 
