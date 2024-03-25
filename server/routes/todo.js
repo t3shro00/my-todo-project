@@ -17,7 +17,7 @@ todoRouter.get('/', async (req, res) => {
 });
 
 todoRouter.post('/new', async (req, res) => {
-    const { description } = req.body; // Extract description from req.body
+    const { description } = req.body; 
     if (!description) {
         return res.status(400).json({ error: 'Description is required' });
     }

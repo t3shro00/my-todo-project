@@ -29,7 +29,7 @@ class Todos {
     }
 
     // Add a new task to the array
-    addNewTask = async (description) => {
+    addTask = async (description) => {
         // Create JSON data
         const json = JSON.stringify({ description }); // Convert data to JSON format
         try {
@@ -45,9 +45,9 @@ class Todos {
                 throw new Error('Failed to save task');
             }
             // Get the new task data and convert it to JSON format
-            const newTaskData = await response.json(); 
+            const result = await response.json(); 
             // Create a new task 
-            const newTask = new Task(newTaskData.id, description);  
+            const newTask = new Task(result.id, description);  
             // Add the new task to the array
             return this.#addToArray(newTask);
         } catch (error) {

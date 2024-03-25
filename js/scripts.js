@@ -1,4 +1,4 @@
-const backendURL = 'http://localhost:3001/'; //
+const backendURL = 'http://localhost:3001'; //
 import { Todos } from './class/todos.js'; 
 const todos = new Todos(backendURL); // Create an instance of the Todos class
 
@@ -90,15 +90,14 @@ inputField.addEventListener('keypress', (event) => {
     }
 });
 
-// Add event listener to the add button
+
 addButton.addEventListener('click', () => {
     // Get the task description from the input field
     const newTaskDescription = inputField.value.trim();
     // Check if the task description is not empty
     if (newTaskDescription !== '') {
         // Save the task to the backend
-        todos.addNewTask(newTaskDescription)
-            // Handle the response from the backend
+        todos.addTask(newTaskDescription) // Update method name here
             .then((newTask) => {
                 // Render the new task
                 renderTask(newTask);
@@ -112,6 +111,7 @@ addButton.addEventListener('click', () => {
         alert('Please enter a task description.');
     }
 });
+
 
 // Call the getTasks function to fetch tasks from the backend
 getTasks();

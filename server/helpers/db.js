@@ -21,4 +21,4 @@ const query = (sql, values = []) => {
     });
 }
 
-module.exports = { pool, query };
+module.exports = { query };
