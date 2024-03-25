@@ -37,6 +37,7 @@ function renderTask(task) {
     // Create a delete button
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
+    deleteButton.classList.add('deleteButton');
     deleteButton.addEventListener('click', () => {
         // Send a DELETE request to the backend
         todos.removeTask(task.id)
